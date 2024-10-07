@@ -204,6 +204,22 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(/* width, height */) {
+  // let res = '';
+  // for (let i = 0; i < width; i += 1) {
+  //   for (let j = 0; j <= height; j += 1) {
+  //     if (i === 0 && j === 0) {
+  //       res += '┌';
+  //     } else if (i === 0 && j === height) {
+  //       res += '┐';
+  //     } else if (i === 0 || i === width) {
+  //       res += '─';
+  //     } else if (i === 0 || (j === 0 || j === width)) {
+  //       res += '│';
+  //     }
+  //   }
+  //   res += '\n';
+  // }
+  // return res;
   throw new Error('Not implemented');
 }
 
@@ -224,13 +240,23 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  // let result = '';
-  // str.charAt
-  // str.forEach(ch => {
-  //   ch.
-  // });
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  let res = '';
+  const aCode = 'a'.charCodeAt(0);
+  const ACode = 'A'.charCodeAt(0);
+  function isLetter(ch) {
+    return ch.toUpperCase() !== ch.toLowerCase();
+  }
+  for (let i = 0; i < str.length; i += 1) {
+    if (isLetter(str[i])) {
+      const aCodeCurr = ((str.charCodeAt(i) - aCode) >= 0) ? aCode : ACode;
+      const ch = String.fromCharCode(aCodeCurr + ((str.charCodeAt(i) - aCodeCurr + 13) % 26));
+      res += ch;
+    } else {
+      res += str[i];
+    }
+  }
+  return res;
 }
 
 /**
