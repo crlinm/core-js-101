@@ -172,8 +172,9 @@ function doRectanglesOverlap(rect1, rect2) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return Math.sqrt((circle.center.x - point.x) ** 2
+    + (circle.center.y - point.y) ** 2) < circle.radius;
 }
 
 
@@ -229,8 +230,8 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  return `${isStartIncluded ? '[' : '('}${a > b ? b : a}, ${a > b ? a : b}${isEndIncluded ? ']' : ')'}`;
 }
 
 
@@ -394,8 +395,22 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let prefix = pathes[0].split('/');
+  for (let i = 1; i < pathes.length; i += 1) {
+    const folders = pathes[i].split('/');
+    for (let j = 0; j < folders.length; j += 1) {
+      if (folders[j] !== prefix[j]) {
+        prefix = prefix.slice(0, j);
+        prefix.push('');
+        break;
+      }
+    }
+  }
+  if (prefix.length === 0) {
+    return '';
+  }
+  return prefix.join('/');
 }
 
 
