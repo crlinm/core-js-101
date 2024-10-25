@@ -289,8 +289,18 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const nums = ccn.toString().split('').map(Number);
+  const parity = nums.length % 2;
+  const res = nums.reduce((acc, item, ind) => {
+    if (ind % 2 === parity) {
+      return (2 * item > 9
+        ? (acc + ((2 * item) % 10) + Math.floor((2 * item) / 10))
+        : (acc + 2 * item));
+    }
+    return (acc + item);
+  }, 0);
+  return res % 10 === 0;
 }
 
 /**
@@ -378,8 +388,8 @@ function isBracketsBalanced(str) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -432,8 +442,18 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const res = [...new Array(m1.length)].map(() => new Array(m2[0].length).fill(0));
+  for (let i = 0; i < res.length; i += 1) {
+    for (let j = 0; j < res.length; j += 1) {
+      let curr = 0;
+      for (let k = 0; k < m1[0].length; k += 1) {
+        curr += m1[i][k] * m2[k][j];
+      }
+      res[i][j] = curr;
+    }
+  }
+  return res;
 }
 
 
@@ -467,8 +487,44 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const xi = [0, 0, 0];
+  const zi = [0, 0, 0];
+  const xj = [0, 0, 0];
+  const zj = [0, 0, 0];
+  const diagx1 = [0, 0];
+  const diagz1 = [0, 0];
+
+  for (let i = 0; i < 3; i += 1) {
+    for (let j = 0; j < 3; j += 1) {
+      if (position[i][j] === 'X') {
+        xj[i] += 1;
+        xi[j] += 1;
+        if (i === j) {
+          diagx1[0] += 1;
+        }
+        if (i + j === 2) {
+          diagx1[1] += 1;
+        }
+      } else if (position[i][j] === '0') {
+        zj[i] += 1;
+        zi[j] += 1;
+        if (i === j) {
+          diagz1[0] += 1;
+        }
+        if (i + j === 2) {
+          diagz1[1] += 1;
+        }
+      }
+    }
+    if ([...xi, ...xj, ...diagx1].filter((item) => item === 3).length > 0) {
+      return 'X';
+    }
+    if ([...zi, ...zj, ...diagz1].filter((item) => item === 3).length > 0) {
+      return '0';
+    }
+  }
+  return undefined;
 }
 
 
